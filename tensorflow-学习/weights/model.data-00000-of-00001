@@ -1,0 +1,12 @@
+—òëz9{"class_name": "Sequential", "config": {"layers": [{"class_name": "Dense", "config": {"activation": "relu", "activity_regularizer": null, "bias_constraint": null, "bias_initializer": {"class_name": "Zeros", "config": {}}, "bias_regularizer": null, "dtype": null, "kernel_constraint": null, "kernel_initializer": {"class_name": "GlorotUniform", "config": {"seed": null}}, "kernel_regularizer": null, "name": "dense_14", "trainable": true, "units": 64, "use_bias": true}}, {"class_name": "Dense", "config": {"activation": "softmax", "activity_regularizer": null, "bias_constraint": null, "bias_initializer": {"class_name": "Zeros", "config": {}}, "bias_regularizer": null, "dtype": null, "kernel_constraint": null, "kernel_initializer": {"class_name": "GlorotUniform", "config": {"seed": null}}, "kernel_regularizer": null, "name": "dense_15", "trainable": true, "units": 10, "use_bias": true}}], "name": "sequential_2"}}¢`šœñ{"class_name": "Dense", "config": {"activation": "relu", "activity_regularizer": null, "bias_constraint": null, "bias_initializer": {"class_name": "Zeros", "config": {}}, "bias_regularizer": null, "dtype": null, "kernel_constraint": null, "kernel_initializer": {"class_name": "GlorotUniform", "config": {"seed": null}}, "kernel_regularizer": null, "name": "dense_14", "trainable": true, "units": 64, "use_bias": true}}¥aˆá{"class_name": "Dense", "config": {"activation": "softmax", "activity_regularizer": null, "bias_constraint": null, "bias_initializer": {"class_name": "Zeros", "config": {}}, "bias_regularizer": null, "dtype": null, "kernel_constraint": null, "kernel_initializer": {"class_name": "GlorotUniform", "config": {"seed": null}}, "kernel_regularizer": null, "name": "dense_15", "trainable": true, "units": 10, "use_bias": true}}œbè#f{"class_name": "Adam", "config": {"amsgrad": false, "beta_1": 0.9, "beta_2": 0.999, "decay": 0.0, "epsilon": 1e-07, "learning_rate": 0.001, "name": "Adam"}}¬£YÒà
+b
+layer-0
+layer-1
+	optimizer7
+OBJECT_CONFIG_JSON/.ATTRIBUTES/OBJECT_CONFIG_JSON 
+@>
+OBJECT_CONFIG_JSON&layer-0/.ATTRIBUTES/OBJECT_CONFIG_JSON 
+@>
+OBJECT_CONFIG_JSON&layer-1/.ATTRIBUTES/OBJECT_CONFIG_JSON 
+B@
+OBJECT_CONFIG_JSON(optimizer/.ATTRIBUTES/OBJECT_CONFIG_JSON 

@@ -1,0 +1,17 @@
+digraph Tree {
+node [shape=box, style="filled, rounded", color="black", fontname=helvetica] ;
+edge [fontname=helvetica] ;
+0 [label="颜 色强度 <= 3.46\nentropy = 1.564\nsamples = 124\nvalue = [39, 51, 34]\nclass = 雪莉", fillcolor="#39e58124"] ;
+1 [label="entropy = 0.0\nsamples = 44\nvalue = [0, 44, 0]\nclass = 雪莉", fillcolor="#39e581ff"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="类黄酮 <= 1.49\nentropy = 1.337\nsamples = 80\nvalue = [39, 7, 34]\nclass = 琴酒", fillcolor="#e581391c"] ;
+0 -> 2 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+3 [label="entropy = 0.0\nsamples = 34\nvalue = [0, 0, 34]\nclass = 贝尔摩德", fillcolor="#8139e5ff"] ;
+2 -> 3 ;
+4 [label="氨酸 <= 670.0\nentropy = 0.615\nsamples = 46\nvalue = [39, 7, 0]\nclass = 琴酒", fillcolor="#e58139d1"] ;
+2 -> 4 ;
+5 [label="entropy = 0.0\nsamples = 7\nvalue = [0, 7, 0]\nclass = 雪莉", fillcolor="#39e581ff"] ;
+4 -> 5 ;
+6 [label="entropy = 0.0\nsamples = 39\nvalue = [39, 0, 0]\nclass = 琴酒", fillcolor="#e58139ff"] ;
+4 -> 6 ;
+}
