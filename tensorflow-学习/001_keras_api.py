@@ -199,4 +199,44 @@ img = np.random.randn(1, 224, 224, 3).astype('float32')
 
 
 print(feat_ext_model.summary())
-print(feat_ext_model(img))
+#print(feat_ext_model(img))
+
+
+class MyDense(layers.Layer):
+    def __init__(self, units = 32):
+        super(MyDense, self).__init__()
+        self.units = units
+    def build(self, input_shape):
+        self.w = self.add_weight(shape = (input_shape[-1],self.units), initializer = 'random_normal', trainable = True)
+        self.b = self.add_weight(shape = (self.units,), initializer = 'random_normal', trainable = True)
+    def call(self, inputs):
+        return tf.matmul(inputs, self.w) + self.b
+    def get_config(self):
+        return {'units': self.units}
+
+inputs = tf.keras.Input((4,))
+outputs = MyDense(10)(inputs)
+model = tf.keras.Model(inputs, outputs)
+print(model.summary())
+config = model.get_config()
+new_model = tf.keras.Model.from_config(config, custom_objects = {'MyDense': MyDense})
+
+
+time_step = 10
+batch_size = 32
+hidden_dim = 32
+inputs_dim = 5
+
+
+class MyRnn(layers.Layer):
+    def __init__(self):
+        super(MyRnn, self).__init__()
+        self.hidden_dim = hidden_dim
+        self.projection1 = layers.Dense(units = hidden_dim, activation = 'relu')
+        self.projection2 = layers.Dense(units = hidden_dim, activation = 'relu')
+        self.classifier = layer.Dense(1, activation = 'sigmoid')
+    def call(self, inputs):
+        
+
+
+
