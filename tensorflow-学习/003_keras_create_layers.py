@@ -104,6 +104,90 @@ y = my_block(tf.ones(shape = (3, 64)))
 print('trainable weights:', len(my_block. trainable_weights))
 
 
+class LossLayer(layers.Layer):
+    def __init__(self, rate = 1e-2):
+        super(LossLayer, self).__init__()
+        self.rate = rate
+    def call(self, inputs):
+        self.add_loss(self.rate * tf.reduce_sum(inputs))
+        return inputs
+
+class OutLayers(layers.Layer):
+    def __init__(self):
+        super(OutLayers, self).__init__()
+        self.loss_fun = LossLayer(1e-2)
+    def call(self, inputs):
+        return self.loss_fun(inputs)
+
+my_layer = OutLayers()
+print(len(my_layer.losses))
+y = my_layer(tf.zeros(1,1))
+print(len(my_layer.losses))
+y = my_layer(tf.zeros(1,1))
+print(len(my_layer.losses))
+
+
+class OuterLayer(layers.Layer):
+    def __init__(self):
+        super(OuterLayer, self).__init__()
+        self.dense = layers.Dense(32, kernel_regularizer = tf.keras.regularizers.l2(1e-3))
+    def call(self, inputs):
+        return self.dense(inputs)
+
+my_layer = OuterLayer()
+y = my_layer(tf.zeros((1,1)))
+print(my_layer.losses)
+print(my_layer.weights)
+
+
+
+class Linear(layers.Layer):
+    def __init__(self, units = 32, **kwargs):
+        super(Linear, self).__init__(**kwargs)
+        self.units = units
+    def build(self, input_shape):
+        self.w = self.add_weight(shape = (input_shape[-1], self.units),
+                                 initializer = 'random_normal',
+                                 trainable = True
+                                )
+        self.b = self.add_weight(shape = (self.units,),
+                                 initializer = 'random_normal',
+                                 trainable = True
+                                )
+    def call(self, inputs):
+        return tf.matmal(inputs, self.w) + self.b
+    def get_config(self):
+        config = super(Linear, self).get_config()
+        config.update({'units': self.units})
+        return config
+
+layer = Linear(125)
+config = layer.get_config()
+print(config)
+new_layer = Linear.from_config(config)
+
+
+class Sampling(layers.Layer):
+    def call(self, inputs):
+        z_mean, z_log_var = inputs
+        batch = tf.shape(z_mean)[0]
+        dim = tf.shape(z_mean)[1]
+        epsilon = tf.keras.backend.random_noraml(shape = (batch, dim))
+        return z_mean + tf.exp(0.5 * z_log_var) * epsilon
+
+class Encoder(layers.Layer):
+    def __init__(self, latent_dim = 32, initermediate_dim = 64, name = 'encoder', **kwargs):
+        super(Enconder, self).__init__(name = name, **kwargs)
+        self.dense_proj = layers.Dense(initermediate_dim, aactivation = 'relu')
+        self.dense_maen = layers.Dense(latent_dim)
+        self.dense_log_var = layers.Dense(latent_dim)
+        self.sampling = Sampling()
+    def call(self, inputs):
+        h1 = self.dense_proj(inputs)
+        z_mean = self.dense_mean(h1)
+        z_log_var = self.dense_log_var(h1)
+        z = self.sampling((z_mean, z_log_var))
+        return z_mean, z_log_var, z
 
 
 
