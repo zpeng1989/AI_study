@@ -190,4 +190,5 @@ class Encoder(layers.Layer):
         return z_mean, z_log_var, z
 
 
-
+class Decoder(layers.Layer):
+    
