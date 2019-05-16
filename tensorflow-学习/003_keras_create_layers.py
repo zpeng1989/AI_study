@@ -256,24 +256,38 @@ class VAE(tf.keras.Model):
         return reconstructed
 
 
-'''
-(x_train, _), _ = tf.keras.datasets.mnist.load_data()
-x_train = x_train.reshape(60000, 784).astype('float32')/255
-vae = VAE(784,32,64)
-optimizer = tf.keras.optimizers.Adam(learning_rate = 1e-3)
-
-vae.compile(optimizer, loss = tf.keras.losses.MeanSquaredError())
-vae.fit(x_train, x_train, epochs = 3, batch_size = 64)
-
-'''
-
-
 
 (x_train, _), _ = tf.keras.datasets.mnist.load_data()
 x_train = x_train.reshape(60000, 784).astype('float32') / 255
 vae = VAE(784,32,64)
 optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
-
+'''
 vae.compile(optimizer, loss=tf.keras.losses.MeanSquaredError())
 vae.fit(x_train, x_train, epochs=3, batch_size=64)
+
+'''
+train_dataset = tf.data.Dataset.from_tensor_slices(x_train)
+train_dataset = train_dataset.shuffle(buffer_size = 1024).batch(64)
+
+original_dim = 784
+vae = VAE(original_dim, 64, 32)
+
+optimizer = tf.keras.optimizers.Adam(learning_rate = 1e-3)
+mse_loss_fn = tf.keras.losses.MeanSquaredError()
+
+loss_metric = tf.keras.metrics.Mean()
+
+for epoch in range(3):
+    print('Start of epochs %d' %(epoch, ))
+    for step, x_batch_train in enumerate(train_dataset):
+        with tf.GradientTape() as tape:
+            reconstructed = vae(x_batch_train)
+            loss = mse_loss_fn(x_batch_train, reconstructed)
+            loss += sum(vae.losses)
+        grads = tape.gradient(loss, vae.trainable_variables)
+        optimizer.apply_gradients(zip(grads, vae.trainable_variables))
+        loss_metric(loss)
+
+        if step % 100 == 0:
+            print('step %s: mean loss = %s' %(step, loss_metric.result()))
 
