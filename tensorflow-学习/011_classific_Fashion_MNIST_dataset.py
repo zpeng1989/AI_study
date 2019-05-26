@@ -12,5 +12,8 @@ print(test_images.shape)
 print(test_labels.shape)
 
 
+train_images = train_images / 255.0
+test_images = test_images / 255.0
+
 
 
