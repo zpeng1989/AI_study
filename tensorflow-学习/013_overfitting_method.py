@@ -87,4 +87,18 @@ l2_model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['a
 
 print(l2_model.summary())
 
-l2_history = l2_model.fit(train_data, train_labels,epochs = 10, batch_size = 512, validation_data = (test_data, test_labels))
+#l2_history = l2_model.fit(train_data, train_labels,epochs = 10, batch_size = 512, validation_data = (test_data, test_labels))
+
+
+dpt_model = keras.Sequential(
+    [
+        layers.Dense(16, activation = 'relu', input_shape = (NUM_WORDS,)),
+        layers.Dropout(0.5),
+        layers.Dense(16, activation = 'relu'),
+        layers.Dropout(0.5),
+        layers.Dense(1, activation = 'sigmoid')
+    ]
+)
+dpt_model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy', 'binary_crossentropy'])
+print(dpt_model.summary())
+dpt_history = dpt_model.fit(train_data, train_labels, epochs = 20, batch_size = 512, validation_data = (test_data, test_labels),verbose=1)
