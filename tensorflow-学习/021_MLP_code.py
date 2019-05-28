@@ -5,7 +5,7 @@ import tensorflow.keras as keras
 import tensorflow.keras.layers as layers
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as p
+import pandas as pd
 '''
 (x_train, y_train),(x_test, y_test) = keras.datasets.boston_housing.load_data()
 print(x_train.shape, " ", y_train.shape)
