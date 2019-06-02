@@ -30,3 +30,9 @@ model.compile(optimizer = keras.optimizers.Adam(), loss = keras.losses.SparseCat
 
 
 print(model.summary())
+
+history = model.fit(x_train, y_train, batch_size = 64, epochs = 5, validation_split = 0.1)
+
+res = model.evaluate(x_test, y_test)
+
+print(res)
