@@ -25,7 +25,7 @@ code = layers.Dense(code_dim, activation = 'relu', name = 'code')(inputs)
 outputs = layers.Dense(x_train.shape[1], activation = 'softmax', name = 'outps')(code)
 
 auto_encoder = keras.Model(inputs, outputs)
-
+auto_encoder.compile(optimizer = 'adam', loss = 'binary_crossentropy')
 print(auto_encoder.summary())
 
-
+history = auto_encoder.fit(x_train, x_train, batch_size = 64, epochs = 5,validation_split = 0.1)
