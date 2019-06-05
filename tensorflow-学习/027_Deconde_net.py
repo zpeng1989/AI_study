@@ -29,3 +29,8 @@ auto_encoder.compile(optimizer = 'adam', loss = 'binary_crossentropy')
 print(auto_encoder.summary())
 
 history = auto_encoder.fit(x_train, x_train, batch_size = 64, epochs = 5,validation_split = 0.1)
+
+encoded = encoder.predict(x_test)
+decoded = decoder.predict(encoded)
+
+
