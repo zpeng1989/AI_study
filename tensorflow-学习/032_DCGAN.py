@@ -29,6 +29,7 @@ def make_generator_model():
     model.add(layers.BatchNormalization())
     model.add(layers.LeakyReLU())
     model.add(layers.Conv2DTranspose(64, (5,5), strides = (2,2), padding = 'same', use_bias = False))
+    assert model.output_shape == (None, 14,14, 64)
     
 
 
