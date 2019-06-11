@@ -29,8 +29,18 @@ def make_generator_model():
     model.add(layers.BatchNormalization())
     model.add(layers.LeakyReLU())
     model.add(layers.Conv2DTranspose(64, (5,5), strides = (2,2), padding = 'same', use_bias = False))
-    assert model.output_shape == (None, 14,14, 64)
-    
+    assert model.output_shape == (None, 14, 14, 64)
+    model.add(layers.BatchNormalization())
+    model.add(layers.LeakyReLU())
+    model.add(layers.Conv2DTranspose(1, (5, 5), strides = (2,2), padding = 'same', use_bias = False, activation = 'tanh'))
+    assert model.output_shape == (None, 28, 28, 1)
+    return model
+
+
+geneerator = make_generator_model()
+
+print(geneerator.model())
+noise = tf.random.normal([1,100])
 
 
 
