@@ -15,10 +15,51 @@ y_train = dftrain.pop('survived')
 y_eval = dfeval.pop('survived')
 
 import tensorflow as tf
-
 tf.random.set_seed(123)
-
 print(dftrain.describe())
+fc = tf.feature_column
+
+CATEGORICAL_COLUMNS = ['sex', 'n_siblings_spouses', 'parch', 'class', 'deck', 'embark_town', 'alone']
+NUMERIC_COLUMNS = ['age', 'fare']
+
+def one_hot_cat_column(feature_name, vocab):
+    return tf.feature_column.indicator_column(tf.feature_column.categorical_column_with_vocabulary_list(feature_name, vocab))
+
+feature_columns = []
+
+for feature_name in CATEGORICAL_COLUMNS:
+    vovabulary = dftrain[feature_name].unique()
+    feature_columns.append(one_hot_cat_column(feature_name, vovabulary))
+
+for feature_name in NUMERIC_COLUMNS:
+    feature_columns.append(tf.feature_column.numeric_column(feature_name, dtype = tf.float32))
+
+print(feature_columns)
+
+example = dict(dftrain.head(1))
+class_fc = tf.feature_column.indicator_column(
+    tf.feature_column.categorical_column_with_vocabulary_list('class', ('First', 'Second', 'Third')))
+
+
+print('Feature value: "{}"'.format(example['class'].iloc[0]))
+print('One-hot encoded: ', tf.keras.layers.DenseFeatures([class_fc])(example).numpy())
+
+
+NUM_EXAMPLES = len(y_train)
+
+def make_input_fn(X, y, n_epochs = None, shuffle = True):
+    def input_fn():
+        dataset = tf.data.Dataset.from_tensor_slices((dict(X), y))
+        if shuffle:
+            dataset = dataset.shuffle(NUM_EXAMPLES)
+        dataset = dataset.repeat(n_epochs)
+        dataset = dataset.batch(NUM_EXAMPLES)
+        return dataset
+    return input_fn
+
+
+train_input_fn = make_input_fn(dftrain, y_train)
+eval_input_fn = make_input_fn(dfeval, y_eval, shuffle = Flase, n_epochs = 1)
 
 
 
