@@ -63,4 +63,22 @@ eval_input_fn = make_input_fn(dfeval, y_eval, shuffle = Flase, n_epochs = 1)
 
 
 
+linear_est = tf.estimator.LinearClassifier(feature_columns)
+
+linear_est.train(train_input_fn, max_steps = 10000)
+
+result = linear_est.evaluate(eval_input_fn)
+clear_output()
+
+print(result)
+
+n_batches = 1
+
+est = tf.estimator.BoostedTreesClassifier(feature_columns, n_batches_per_layer = n_batches)
+
+est.train(train_input_fn, max_steps = 100)
+
+pred_dicts = list(est.predict(eval_input_fn))
+probs = pd.Series([pred['probabilities'][1] for pred in pred_dicts])
+
 
