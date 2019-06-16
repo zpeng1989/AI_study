@@ -59,7 +59,7 @@ def make_input_fn(X, y, n_epochs = None, shuffle = True):
 
 
 train_input_fn = make_input_fn(dftrain, y_train)
-eval_input_fn = make_input_fn(dfeval, y_eval, shuffle = Flase, n_epochs = 1)
+eval_input_fn = make_input_fn(dfeval, y_eval, shuffle = False, n_epochs = 1)
 
 
 

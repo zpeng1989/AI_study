@@ -1,5 +1,5 @@
 import tensorflow_datasets as tfds
-
+import tensorflow as tf
 
 dataset, info = tfds.load('imdb_reviews/subwords8k', with_info = True, as_supervised = True)
 
@@ -10,9 +10,9 @@ tokenizer = info.features['text'].encoder
 print(tokenizer.vocab_size)
 
 
-sample_string = 'Hello world, Tensorflow, new world'
-tokenized_string = tokenizer.encoder(sample_string)
-print(tokenized_string)
+#sample_string = 'Hello world, Tensorflow, new world'
+#tokenized_string = tokenizer.encoder(sample_string)
+#print(tokenized_string)
 
 sample_string = 'Hello word , Tensorflow'
 tokenized_string = tokenizer.encode(sample_string)
@@ -23,16 +23,18 @@ src_string = tokenizer.decode(tokenized_string)
 print('original string: ', src_string)
 
 for t in tokenized_string:
-    print(str(t) + '->', tokenizer.encoder([t]))
+    print(str(t) + '->', tokenizer.decode([t]))
 
 
 BUFFER_SIZE = 10000
 BATCH_SIZE = 64
 
 train_dataset = train_dataset.shuffle(BATCH_SIZE)
-train_dataset = train_dataset.padding_batch(BATCH_SIZE, train_dataset.output_shapes)
-test_dataset = test_dataset.padding_batch(BATCH_SIZE, test_dataset.output_shapes)
+train_dataset = train_dataset.padded_batch(BATCH_SIZE, train_dataset.output_shapes)
+test_dataset = test_dataset.padded_batch(BATCH_SIZE, test_dataset.output_shapes)
 
+#train_dataset = train_dataset.shuffle(BUFFER_SIZE)
+#train_dataset = train_dataset.padded_batch(BATCH_SIZE, train_dataset.output_shapes)
 
 def get_model():
     model = tf.keras.Sequential([
