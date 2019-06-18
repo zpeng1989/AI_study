@@ -37,6 +37,27 @@ def filter_long_sent(x,y, max_length = MAX_LENGTH):
 def tf_encode(pt, en):
     return tf.py_function(encode, [pt, en], [tf.int64, tf.int64])
 
+BUFFER_SIZE = 20000
+BATCH_SIZE = 64
+
+train_dataset = train_examples.map(tf_encode)
+train_dataset = train_dataset.filter(filter_long_sent)
+train_dataset = train_dataset.cache()
+train_dataset = train_dataset.padded_batch(BATCH_SIZE, padded_shapes = ([40], [40]))
+train_dataset = train_dataset.prefet(tf.data.experimental.AUTOTUNE)
+
+val_dataset = val_examples.map(tf_encode)
+val_dataset = val_dataset.filter(filter_long_sent).padded_batch(BATCH_SIZE, padded_shapes = ([40], [40]))
+de_batch, en_batch = next(iter(train_dataset))
 
 
+def get_angles(pos, i, d_model):
+    angle_rates = 1/np.power(10000, (2*(i//2))/np.float32(d_model))
+    return pos * angle_rates
+
+def positional_encoding(position, d_model):
+    angle_rads = get_angles(np.arange(position)[:, np.newaxis], np.arange(d_model)[np.newaxis,:], d_model)
+    sines = np.sin(angle_rads[:, 0::2])
+    cones = np.cos(angle_rads[:, 1::2])
+    
 
