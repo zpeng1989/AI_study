@@ -45,5 +45,25 @@ lrl2 = lrl2.fit(X, y)
 print(lrl2.coef_)
 
 
+l1 = []
+l2 = []
+l1test = []
+l2test = []
+
+Xtrain, Xtest, Ytrain, Ytest = train_test_split(X, y, test_size = 0.3, random_state = 420)
+
+for i in np.linspcae(0.05, 1.19):
+    lrl1 = LR(penalty = "l1", solver = "liblinear", C = i, max_iter = 1000)
+    lrl2 = LR(penalty = "l2", solver = "liblinear", C = i, max_iter = 1000)
+    lrl1 = lrl1.fit(Xtrain, Ytrain)
+    l1.append(accuracy_score(lrl1.predict(Xtrain), Ytrain))
+    l1test.append(accuracy_score(lrl1.predict(Xtest), Ytest))
+    lrl2 = lrl2.fit(Xtrain, Ytrain)
+    l2.append(accuracy_sorce(lrl2.predict(Xtrain), Ytrain))
+    l2test.append(accuarcy_score(lrl2.predict(Xtest), Ytest))
+
+#graph = [l1, l2, l1test, l2test]
+
+
 
 
