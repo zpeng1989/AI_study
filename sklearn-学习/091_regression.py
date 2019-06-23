@@ -6,7 +6,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.datasets import fetch_california_housing as fch
 import pandas as pd
 from sklearn.metrics import mean_squared_error as MSE
-
+from sklearn.metrics import r2_score
 
 
 ## linear_model.LinearRegression     最小二乘法的线性回归
@@ -55,6 +55,9 @@ print(MSE(yhat, Ytest))
 print(cross_val_score(reg, X, y, cv = 10, scoring = 'mean_squared_error'))
 
 
+print(r2_score(yhat, Ytest))
 
+r2 = reg.score(Xtest, Ytest)
+print(r2)
 
 
