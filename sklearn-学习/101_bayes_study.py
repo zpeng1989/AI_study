@@ -21,8 +21,17 @@ X, y = digits.data, digits.target
 
 Xtrain, Xtest, Ytrain, Ytest = train_test_split(X,y, test_size = 0.3, random_state = 420)
 
+print(Xtrain[0:5,:])
+print(Ytrain[0:5])
 gnb = GaussianNB().fit(Xtrain, Ytrain)
 acc_score = gnb.score(Xtest, Ytest)
 Y_pred = gnb.predict(Xtest)
+print(Y_pred.shape)
 prob = gnb.predict_proba(Xtest)
 print(prob.shape)
+print(prob)
+
+from sklearn.metrics import confusion_matrix as CM
+print(CM(Ytest, Y_pred))
+
+
