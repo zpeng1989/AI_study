@@ -80,4 +80,40 @@ plot_learning_curve(XGBR(n_estimators = 100, random_state = 420), 'XGB', Xtrain,
 plt.show()
 
 
-    
+
+axisx = range(10, 1010, 50)
+rs = []
+for i in axisx:
+    reg = XGBR(n_estimators = i, random_state = 420)
+    rs.append(CVS(reg, Xtrain, Ytrain, cv = cv).mean())
+print(axisx[rs.index(max(rs))], max(rs))
+plt.figure(figsize = (20, 5))
+plt.plot(axisx, rs, c = 'red', label = 'XGB')
+plt.legend()
+plt.show()
+
+
+
+axisx = range(10, 1010, 50)
+rs = []
+var = []
+ge = []
+for i in axisx:
+    reg = XGBR(n_estimators = i, random_state = 420)
+    #rs.append(CVS(reg, Xtrain, Ytrain, cv = cv).mean())
+    cvresult = cvs(reg, Xtrain, Ytrain, cv = cv)
+    rs.append(cvresult.mean())
+    var.append(cvresult.var())
+    ge.append((1 - cvresult.mean())**2 + cvresult.var())
+#print(axisx[rs.index(max(rs))], max(rs))
+print(axisx[rs.index(max(rs))], max(rs), var[rs.index(max(rs))])
+print(axisx[var.index(min(var))], rs[var.index(min(var))], min(var))
+print(axisx[ge.index(min(ge))],rs[ge.index(min(ge))], var[ge.index(min(ge))], min(ge))
+plt.figure(figsize = (20, 5))
+plt.plot(axisx, rs, c = 'red', label = 'XGB')
+plt.legend()
+plt.show()
+
+
+
+
