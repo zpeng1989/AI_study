@@ -9,3 +9,7 @@ rowdata={'电影名称':['无问西东','后来的我们','前任3','红海行�
 movie_data = pd.DataFrame(rowdata)
 
 print(movie_data)
+
+
+
+
