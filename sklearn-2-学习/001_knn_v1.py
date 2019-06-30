@@ -11,5 +11,11 @@ movie_data = pd.DataFrame(rowdata)
 print(movie_data)
 
 
+new_data = [24, 67]
+dist = list((((movie_data.iloc[:6, 1:3] - new_data)**2).sum(1))**0.5)
+print(dist)
+
+
+dist_1 = pd.DataFrame({'dist': dist, 'labels':(movie_data.iloc[:6,3])})
 
 
