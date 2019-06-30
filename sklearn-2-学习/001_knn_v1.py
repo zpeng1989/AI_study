@@ -30,4 +30,11 @@ print(result)
 
 def classofy0(inx, dataset, k):
     result = []
+    dist = list((((dataset.iloc[:,1:3]-inx)**2).sum(1))**0.5)
+    dist_1 = pd.DataFrame({'dist':dist, 'labels':(dataset.iloc[:,3])})
+    dr = dist_1.sort_values(by = 'dist')[:k]
+    re = dr.loc[:, 'labels'].value_counts()
+    result.append(re.index[0])
+    return result
+
     
