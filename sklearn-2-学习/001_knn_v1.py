@@ -18,4 +18,16 @@ print(dist)
 
 dist_1 = pd.DataFrame({'dist': dist, 'labels':(movie_data.iloc[:6,3])})
 
+dr = dist_1.sort_values(by = 'dist')[:,4]
+print(dr)
 
+re = dr.loc[:, 'labels'].value_counts()
+print(re)
+
+result = []
+result.append(re.index[0])
+print(result)
+
+def classofy0(inx, dataset, k):
+    result = []
+    
