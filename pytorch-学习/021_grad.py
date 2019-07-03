@@ -1,5 +1,6 @@
 from __future__ import print_function
 import torch as t
+from torch.autograd import Function
 
 a = t.randn(3, 4, requires_grad = True)
 b = t.zeros(3, 4).requires_grad_()
@@ -31,5 +32,20 @@ print(y)
 y.backward(t.ones(y.size()))
 print(x.grad)
 gradf(x)
+
+class MultiplyAdd(Function):
+    @staticmethod
+    def forward(ctx, w, x, b):
+        ctx.save_for_backward(w,x)
+        output = w * x + b
+        return output
+    @staticmethod
+    def backward(ctx, grad_output):
+        w, x = ctx.saved_tensors
+        grad_w = grad_output * x
+        grad_x = grad_output * w
+        grad_b = grad_output * 1
+        return grad_w, grad_x, grad_b
+
 
 
