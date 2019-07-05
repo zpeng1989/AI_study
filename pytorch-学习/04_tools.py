@@ -148,7 +148,17 @@ from torchvision.utils import make_grid, save_image
 
 dataiter = iter(dataloader)
 img = make_grid(next(dataiter)[0], 8)
-to_img(img).show()
+#to_img(img).show()
+
+##mul GPU
+
+a = t.Tensor(3, 4)
+if t.cuda.is_available():
+    a = a.cuda(1) 
+    t.save(a,'a.pth')                                       
+    b = t.load('a.pth')
+    c = t.load('a.pth', map_location=lambda storage, loc: storage)
+    d = t.load('a.pth', map_location={'cuda:1':'cuda:0'})
 
 
 
