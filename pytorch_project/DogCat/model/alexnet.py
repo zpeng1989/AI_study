@@ -21,4 +21,18 @@ class AlexNet(BasicModule):
                 nn.ReLU(inplace = True),
                 nn.MaxPool2d(kernel_size = 3, stride = 2)
             )
+        self.classifier = nn.Sequential(
+                nn.Dropout(),
+                nn.Linear(256*6*6, 4096),
+                nn.ReLU(inplace = True),
+                nn.Dropout(),
+                nn.Linear(4096, 4096),
+                nn.ReLU(inplcae = True),
+                nn.Linear(4096, num_classes)
+            )
+    def forward(self, x):
+        x = self.features(x)
+        x = x.view(x.size(0), 256*6*6)
+        x = self.classifier(x)
+        return x
 
