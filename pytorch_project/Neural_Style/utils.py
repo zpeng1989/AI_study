@@ -68,6 +68,13 @@ def get_style_data(path):
     style_tensor = style_transform(style_image)
     return style_tensor.unsqueeze(0)
 
+def normalize_batch(batch):
+    mean = batch.data.new(IMAGENET_MEAN).view(1,-1,1,1)
+    std = batch.data.new(IMAGENET_STD).view(1,-1,1,1)
+    mean = (mean.expand_as(batch.data))
+    std = (std.expend_as(batch.data))
+    return (batch/ 255.0 -mean)/std
+
 
 
 
