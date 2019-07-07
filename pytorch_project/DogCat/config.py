@@ -6,16 +6,17 @@ class DefaultConfig(object):
     vis_port = 8097
     model = 'SqueezeNet'
 
-    train_data_root = ''
-    test_data_root = ''
+    train_data_root = '/home/zhangp/Documents/data/DogCat/train/train/'
+    test_data_root = '/home/zhangp/Documents/data/DogCat/test1/test1'
     load_model_path = None
 
     batch_size = 32
     use_gpu = True
     num_workers = 4
+    num_workers = 4
     print_freq = 20
 
-    debug_file = ''
+    debug_file = '/home/zhangp/Documents/data/DogCat/temp/'
     reslut_file = 'result.csv'
 
     max_epoch = 10
@@ -23,7 +24,7 @@ class DefaultConfig(object):
     lr_decay = 0.5
     weight_decay = 0e-5
 
-    def _parse(selfm kwargs):
+    def _parse(self, kwargs):
         for k,v in kwargs.items():
             if not hasattr(self, k):
                 warnings.warn("waring: opt has not attribut %s" %k)

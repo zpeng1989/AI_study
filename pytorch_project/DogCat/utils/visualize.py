@@ -38,7 +38,7 @@ class Visualizer(object):
                         )
     
     def log(self, info, win = 'log_text'):
-        self.log_text += ('[{time}]{info}<br>'.format(time = time.strftime(%m%d_%H%M%S), info = info))
+        self.log_text += ('[{time}]{info}<br>'.format(time = time.strftime('%m%d_%H%M%S'), info = info))
         self.vis.text(self.log_text, win)
 
     def __getattr__(self, name):

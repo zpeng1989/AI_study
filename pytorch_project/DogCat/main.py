@@ -2,7 +2,7 @@ from config import opt
 import os
 import torch as t
 import models
-from data.dastaset import DogCat
+from data.dataset import DogCat
 from torch.utils.data import DataLoader
 from torchnet import meter
 from utils.visualize import Visualizer
@@ -43,19 +43,25 @@ def write_csv(results, file_name):
 def train(**kwargs):
     opt._parse(kwargs)
     vis = Visualizer(opt.env, port = opt.vis_port)
+    print(opt.model)
+    #print(getattr(models))
+    #print(getattr(models, 'alexnet'))
+    #model = getattr(models, opt.model)().eval()
+    #model = models.SqueezeNet
     model = getattr(models, opt.model)()
     if opt.load_model_path:
         model.load(opt.load_model_path)
     model.to(opt.device)
-    train_data = DogCat(opt.train_data_root, train = True)
-    val_data = DogCat(opt.train_data_root, train = False)
+    print(opt.train_data_root)
+    train_data = DogCat(root = opt.train_data_root, train = True)
+    val_data = DogCat(root = opt.train_data_root, train = False)
     train_dataloader = DataLoader(train_data, opt.batch_size, shuffle = True, num_workers = opt.num_workers)
-    val_dataloader = DataLoader(val_data, opt.batch_size, shuffle = False, num_worker = opt.num_workers)
-    criterion = t.nn.CrossENtropyLoss()
+    val_dataloader = DataLoader(val_data, opt.batch_size, shuffle = False, num_workers = opt.num_workers)
+    criterion = t.nn.CrossEntropyLoss()
     lr = opt.lr
     optimizer = model.get_optimizer(lr, opt.weight_decay)
     loss_meter = meter.AverageValueMeter()
-    cofusion_matrix = meter.ConfusionMeter(2)
+    confusion_matrix = meter.ConfusionMeter(2)
     previous_loss = 1e10
 
     for epoch in range(opt.max_epoch):
@@ -71,11 +77,11 @@ def train(**kwargs):
             optimizer.step()
             loss_meter.add(loss.item())
             confusion_matrix.add(score.detach(), target.detach())
-            if (ii + 1)%opt.print_freq == 0:
-                vis.plot('loss', loss_meter.value()[0])
-                if os.path.exists(opt.debug_file):
-                    import ipdb;
-                    ipdb.set_trace()
+            #if (ii + 1)%opt.print_freq == 0:
+            #    vis.plot('loss', loss_meter.value()[0])
+                #if os.path.exists(opt.debug_file):
+                #    import ipdb;
+                #    ipdb.set_trace()
     
     model.save()
     val_cm, val_accuracy = val(model, val_dataloader)

@@ -7,6 +7,7 @@ from torchvision import transforms as T
 
 class DogCat(data.Dataset):
     def __init__(self, root, transforms = None, train = True, test = False):
+        print(root)
         self.test = test
         imgs = [os.path.join(root,img) for img in os.listdir(root)]
         if self.test:
@@ -14,7 +15,7 @@ class DogCat(data.Dataset):
         else:
             imgs = sorted(imgs, key = lambda x: int(x.split('.')[-2]))
         imgs_num = len(imgs)
-        if slef.test:
+        if self.test:
             self.imgs = imgs
         elif train:
             self.imgs = imgs[:int(0.7 * imgs_num)]
@@ -33,8 +34,11 @@ class DogCat(data.Dataset):
             else:
                 self.transforms = T.Compose([
                         T.Resize(224),
-                        T.RandomReSizedCrop(224),
-                        T.RandomHorizontalFilp(),
+                        T.Scale(224),
+                        #T.RandomReSizedCrop(224),
+                        T.RandomResizedCrop(224),
+                        #T.RandomHorizontalFilp(),
+                        T.RandomHorizontalFlip(),
                         T.ToTensor(),
                         normalize
                     ])
