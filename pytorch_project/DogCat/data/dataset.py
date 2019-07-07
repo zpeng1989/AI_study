@@ -45,7 +45,7 @@ class DogCat(data.Dataset):
     def __getitem__(self, index):
         img_path = self.imgs[index]
         if self.test:
-            label = int(self.imgs[index].split('/')[-2].split('/')[-1])
+            label = int(self.imgs[index].split('.')[-2].split('/')[-1])
         else:
             label = 1 if 'dog' in img_path.split('/')[-1] else 0
         data = Image.open(img_path)
