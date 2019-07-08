@@ -228,6 +228,7 @@ def train(**kwargs):
                 vis.plot('errorg', errord_meter.value()[0])
 
         if (epoch + 1) % opt.save_every == 0:
+            fix_fake_imgs = netg(fix_noises)
             tv.utils.save_image(fix_fake_imgs.data[:64], '%s%s.png' %(opt.save_path, epoch), normalize = True, range = (-1, 1))
             t.save(netd.state_dict(), 'checkpoints/netd_%s.path' % epoch)
             t.save(netg.state_dict(), 'checkpoints/netg_%s.path' % epoch)
