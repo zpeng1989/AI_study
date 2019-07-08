@@ -9,11 +9,11 @@ class NetG(nn.Module):
             nn.ConvTranspose2d(opt.nz, ngf*8, 4,1,0, bias = False),
             nn.BatchNorm2d(ngf * 8),
             nn.ReLU(True),
-            nn.ConvTranspose2d(ngf * 8, ngf *4, 2,4,2,1,bais = False),
+            nn.ConvTranspose2d(ngf * 8, ngf *4, 4,2,1,bias = False),
             nn.BatchNorm2d(ngf * 4),
             nn.ReLU(True),
             nn.ConvTranspose2d(ngf * 4, ngf * 2, 4, 2, 1, bias = False),
-            nn.BatchNorm2d(ngf),
+            nn.BatchNorm2d(ngf*2),
             nn.ReLU(True),
             nn.ConvTranspose2d(ngf * 2, ngf, 4, 2, 1, bias = False),
             nn.BatchNorm2d(ngf),
@@ -27,7 +27,7 @@ class NetG(nn.Module):
 
 class NetD(nn.Module):
     def __init__(self, opt):
-        super(NetD, self).__int()
+        super(NetD, self).__init__()
         ndf = opt.ndf
         self.main = nn.Sequential(
             nn.Conv2d(3, ndf, 5, 3, 1, bias = False),
