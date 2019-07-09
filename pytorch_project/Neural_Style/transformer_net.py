@@ -6,7 +6,7 @@ import numpy as np
 class TransformerNet(nn.Module):
     def __init__(self):
         super(TransformerNet, self).__init__()
-        self.initial_layer = nn.Sequential(
+        self.initial_layers = nn.Sequential(
                 ConvLayer(3, 32, kernel_size = 9, stride = 1),
                 nn.InstanceNorm2d(32, affine = True),
                 nn.ReLU(True),
@@ -26,15 +26,16 @@ class TransformerNet(nn.Module):
             )
 
         self.upsample_layers = nn.Sequential(
-                UnsampleConvLayer(128, 64, kernel_size = 3, stride = 1, upsample = 2),
+                UpsampleConvLayer(128, 64, kernel_size = 3, stride = 1, upsample = 2),
                 nn.InstanceNorm2d(64, affine = True),
                 nn.ReLU(True),
-                UnsampleConvLayer(64, 32, kernel_size = 3, stride = 1, upsample = 2),
+                UpsampleConvLayer(64, 32, kernel_size = 3, stride = 1, upsample = 2),
                 nn.InstanceNorm2d(32, affine = True),
                 nn.ReLU(True),
                 ConvLayer(32, 3, kernel_size = 9, stride = 1)
             )
     def forward(self, x):
+        #x = self.initial_layers(x)
         x = self.initial_layers(x)
         x = self.res_layers(x)
         x = self.upsample_layers(x)
@@ -50,7 +51,7 @@ class ConvLayer(nn.Module):
 
     def forward(self, x):
         out = self.reflection_pad(x)
-        out - self.conv2d(out)
+        out = self.conv2d(out)
         return out
 
 
@@ -58,7 +59,7 @@ class UpsampleConvLayer(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, stride, upsample = None):
         super(UpsampleConvLayer, self).__init__()
         self.upsample = upsample
-        reflection_padding = int(np.floot(kernel_size/2))
+        reflection_padding = int(np.floor(kernel_size/2))
         self.reflection_pad = nn.ReflectionPad2d(reflection_padding)
         self.conv2d = nn.Conv2d(in_channels, out_channels, kernel_size, stride)
 
@@ -71,8 +72,9 @@ class UpsampleConvLayer(nn.Module):
         return out
 
 
-class ReasidualBlock(nn.Module):
+class ResidualBlock(nn.Module):
     def __init__(self, channels):
+        super(ResidualBlock, self).__init__()
         self.conv1 = ConvLayer(channels, channels, kernel_size = 3, stride = 1)
         self.in1 = nn.InstanceNorm2d(channels, affine = True)
         self.conv2 = ConvLayer(channels, channels, kernel_size = 3, stride = 1)

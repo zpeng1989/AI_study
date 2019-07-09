@@ -12,11 +12,10 @@ class Vgg16(torch.nn.Module):
 
         
     def forward(self, x):
-        reaults = []
+        results = []
         for ii, model in enumerate(self.features):
             x = model(x)
             if ii in {3, 8, 15, 22}:
                 results.append(x)
-        vgg_outputs = namedtuple(
-            'VggOutputs', ['relu1_2', 'relu2_2', 'relu3_3', 'relu4_3'])
-        return vgg_outputs(*reaults)
+        vgg_outputs = namedtuple('VggOutputs', ['relu1_2', 'relu2_2', 'relu3_3', 'relu4_3'])
+        return vgg_outputs(*results)

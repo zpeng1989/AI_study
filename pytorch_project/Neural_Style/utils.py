@@ -1,4 +1,4 @@
-from itertooks import chain
+from itertools import chain
 import visdom
 import torch as t
 import time
@@ -19,7 +19,8 @@ def gram_matrix(y):
 class Visualizer():
     def __init__(self, env = 'default', **kwargs):
         import visdom
-        self.vis = visdom.Visdom(env = env, use_incoming_socker = False, **kwargs)
+        #self.vis = visdom.Visdom(env = env, use_incoming_socker = False, **kwargs)
+        self.vis = visdom.Visdom(env = env, use_incoming_socket = False, **kwargs)
         self.index = {}
         self.log_text = ''
 
@@ -44,6 +45,12 @@ class Visualizer():
                       win = name,
                       opts = dict(title = name)
         )
+
+
+    def img(self, name, img_):
+        if len(img_.size()) < 3:
+            img_ = img_.cpu().unsqueeze(0)
+        self.vis.image(img_.cpu(), win = name, opts = dict(title = name))
     
     def img_grid_many(self, d):
         for k, v in d.items():
@@ -56,7 +63,7 @@ class Visualizer():
         self.log_text += ('[{time}] {info} <br>'.format(
             time=time.strftime('%m%d_%H%M%S'),
             info=info))
-        self __getattr__(self, name):
+        def __getattr__(self, name):
             return getattr(self.vis, name)
 
 def get_style_data(path):
@@ -72,7 +79,7 @@ def normalize_batch(batch):
     mean = batch.data.new(IMAGENET_MEAN).view(1,-1,1,1)
     std = batch.data.new(IMAGENET_STD).view(1,-1,1,1)
     mean = (mean.expand_as(batch.data))
-    std = (std.expend_as(batch.data))
+    std = (std.expand_as(batch.data))
     return (batch/ 255.0 -mean)/std
 
 

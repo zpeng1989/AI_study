@@ -1,4 +1,4 @@
-import torch ad t
+import torch as t
 import torchvision as tv
 import torchnet as tnt
 
@@ -11,6 +11,10 @@ from torch.nn import functional as F
 import tqdm 
 import os
 import ipdb
+import torch.nn as nn
+
+
+#from torchnet.meter import AverageValueMeter
 
 mean = [0.485, 0.456, 0.406]
 std = [0.229, 0.224, 0.225]
@@ -18,8 +22,8 @@ std = [0.229, 0.224, 0.225]
 class Config(object):
     image_size = 256
     batch_size = 8
-    data_root = ''
-    num_workers = 4
+    num_workers = 4 
+    data_root = '/home/zhangp/Documents/data/'
     use_gpu = True
     
     style_path = 'style.jpg'
@@ -44,6 +48,7 @@ def train(**kwargs):
     for k_, v_ in kwargs.items():
         setattr(opt, k_, v_)
     device = t.device('cuda') if opt.use_gpu else t.device('cpu')
+    #vis = utils.Visualizer(opt.env)
     vis = utils.Visualizer(opt.env)
     transfroms = tv.transforms.Compose([
             tv.transforms.Resize(opt.image_size),
@@ -60,12 +65,16 @@ def train(**kwargs):
     transformer.to(device)
 
     vgg = Vgg16().eval()
+    #vgg = nn.DataParallel(vgg)
     vgg.to(device)
     for param in vgg.parameters():
         param.requires_grad = False
 
-    optimizer = t.optim.Adam(transformer.parameters(), opt.lt)
+    optimizer = t.optim.Adam(transformer.parameters(), opt.lr)
 
+    style = utils.get_style_data(opt.style_path)
+    vis.img('style', (style.data[0] * 0.225 + 0.45).clamp(min=0, max=1))
+    #style = nn.DataParallel(style)
     style = style.to(device)
     with t.no_grad():
         features_style = vgg(style)
@@ -106,11 +115,11 @@ def train(**kwargs):
                 if (ii + 1)% opt.plot_every == 0:
                     if os.path.exists(opt.debug_file):
                         ipdb.set_trace()
-                    vis.plot('content_loss', content_meter.value()[0])
-                    vis.plot('style_loss', style_meter.value()[0])
-                    vis.img('output', (y.data.cpu()[0] * 0.225 + 0.45).clamp(min=0, max=1))
-                    vis.img('input', (x.data.cpu()[0] * 0.225 + 0.45).clamp(min=0, max=1))
-            vis.save([opt.env])
+                    #vis.plot('content_loss', content_meter.value()[0])
+                    #vis.plot('style_loss', style_meter.value()[0])
+                    #vis.img('output', (y.data.cpu()[0] * 0.225 + 0.45).clamp(min=0, max=1))
+                    #vis.img('input', (x.data.cpu()[0] * 0.225 + 0.45).clamp(min=0, max=1))
+            #vis.save([opt.env])
             t.save(transformer.state_dict(), 'checkpoints/%s_style.pth' % epoch)
 
 
