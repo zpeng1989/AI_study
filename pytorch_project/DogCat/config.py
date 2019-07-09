@@ -7,8 +7,8 @@ class DefaultConfig(object):
     model = 'SqueezeNet'
 
     train_data_root = '/home/zhangp/Documents/data/DogCat/train/train/'
-    test_data_root = '/home/zhangp/Documents/data/DogCat/test1/test1'
-    load_model_path = None
+    test_data_root = '/home/zhangp/Documents/data/DogCat/test1/test1/'
+    load_model_path = '/home/zhangp/Documents/mission/AI_study/pytorch_project/DogCat/checkpoints/squeezenet_0707_11:10:14.pth'
 
     batch_size = 32
     use_gpu = True
@@ -17,7 +17,7 @@ class DefaultConfig(object):
     print_freq = 20
 
     debug_file = '/home/zhangp/Documents/data/DogCat/temp/'
-    reslut_file = 'result.csv'
+    result_file = 'result.csv'
 
     max_epoch = 10
     lr = 0.001

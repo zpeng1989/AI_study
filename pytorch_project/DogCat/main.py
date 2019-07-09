@@ -21,7 +21,7 @@ def test(**kwargs):
     model.to(opt.device)
 
     train_data = DogCat(opt.test_data_root, test = True)
-    test_dataloader = DataLpader(train_data, batch_size = opt.batch_size, shuffle = False, num_workers = opt.num_workers)
+    test_dataloader = DataLoader(train_data, batch_size = opt.batch_size, shuffle = False, num_workers = opt.num_workers)
     results = []
     for ii, (data, path) in tqdm(enumerate(test_dataloader)):
         input = data.to(opt.device)
@@ -29,7 +29,7 @@ def test(**kwargs):
         probability = t.nn.functional.softmax(score, dim = 1)[:,0].detach().tolist()
         batch_results = [(path_.item(), probability_) for path_, probability_ in zip(path, probability)]
         results += batch_results
-    write_csv(results, opt.results_file)
+    write_csv(results, opt.result_file)
     return results
 
 
