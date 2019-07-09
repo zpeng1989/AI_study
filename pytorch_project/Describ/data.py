@@ -25,3 +25,43 @@ def create_collate_fn(padding, eos, max_length = 50):
         return (imgs, (cap_tensor, lengths), indexs)
     return collate_fn
 
+class CaptionDataset(data.Dataset):
+    def __init__(self, opt):
+        self.opt = opt
+        data = t.load(opt.caption_data_path)
+        word2ix = data['word2ix']
+        self.captions = data['caption']
+        self.padding = word2ix.get(data.get('padding'))
+        self.end = word2ix.get(data.get('end'))
+        self._data = data
+        self.ix2id = data['ix2id']
+        self.all_imgs = t.load(opt.img_feature_path)
+
+    def __getitem(self, index):
+        img = self.all_imgs[index]
+        caption = self.captions[index]
+        rdn_index = np.random.choice(len(caption),1)[0]
+        caption = caption[rdn_index]
+        return img, t.LongTensor(caption), index
+
+    def __len__(self):
+        return len(self,ix2id)
+
+
+def get_dataloader(opt):
+    dataset = CaptionDataset(opt)
+    dataloader = data.DataLoader(dataset,
+        batch_size = opt.batch_size, 
+        shuffle = opt.shuffle,
+        num_workers = opt.num_workers,
+        collate_fn = create_collate_fn(dataset.padding, dataset.end)
+    )
+    return dataloader
+
+if __name__ == '__main__':
+    from config import Config
+    opt = Config()
+    dataloader = get_dataloader(opt)
+    for ii, data in ensumerate(dataloader):
+        print(ii, data)
+        break
