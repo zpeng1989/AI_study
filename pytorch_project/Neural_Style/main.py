@@ -62,6 +62,7 @@ def train(**kwargs):
     transformer = TransformerNet()
     if opt.model_path:
         transformer.load_state_dict(t.load(opt.model_path, map_location =lambda _s, _: _s))
+    transformer = nn.DataParallel(transformer)
     transformer.to(device)
 
     vgg = Vgg16().eval()
