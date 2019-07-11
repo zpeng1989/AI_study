@@ -1,3 +1,4 @@
+# coding:utf8
 import sys
 import os
 import json
@@ -5,7 +6,7 @@ import re
 import numpy as np
 
 
-def _parseRawData(author = None, constrain = None, str = './chinese-poetry/json/simplified', category = 'poet.tang'):
+def _parseRawData(author = None, constrain = None, src = './chinese-poetry/json/simplified', category = 'poet.tang'):
     def sentenceParse(para):
         result, number = re.subn(u"(.*)", "", para)
         result, number = re.subn(u"{.*}", "", result)
@@ -24,7 +25,7 @@ def _parseRawData(author = None, constrain = None, str = './chinese-poetry/json/
         data = json.loads(open(file).read())
         for poetry in data:
             pdata = ""
-            if (author is not None and poetry.get("author")! = author):
+            if (author is not None and poetry.get("author")!= author):
                 continue
             p = poetry.get("paragraphs")
             flag = False
@@ -52,8 +53,8 @@ def _parseRawData(author = None, constrain = None, str = './chinese-poetry/json/
     return data
 
 
-def pad_sequences(sequences, maxlen = None, dtype = 'int32', padding = 'pre', value = 0.):
-    if not hasttr(sequences, '__len__'):
+def pad_sequences(sequences, maxlen = None, dtype = 'int32', padding = 'pre', truncating = 'pre', value = 0.):
+    if not hasattr(sequences, '__len__'):
         raise ValueError('sequences must be iterable')
     lengths = []
     for x in sequences:
@@ -97,6 +98,8 @@ def pad_sequences(sequences, maxlen = None, dtype = 'int32', padding = 'pre', va
 def get_data(opt):
     if os.path.exists(opt.pickle_path):
         data = np.load(opt.pickle_path)
+        print(data)
+        #data, word2ix, ix2word = data['data'], data['word2ix'].item(), data['ix2word'].item()
         data, word2ix, ix2word = data['data'], data['word2ix'].item(), data['ix2word'].item()
         return data. word2ix, ix2word
 
@@ -106,7 +109,7 @@ def get_data(opt):
     word2ix['<EOP>'] = len(word2ix)
     word2ix['<START>'] = len(word2ix)
     word2ix['</s>'] = len(word2ix)
-    ix2word = {_ix: _word for _word, _ix in list(word2ix.tiems())}
+    ix2word = {_ix: _word for _word, _ix in list(word2ix.items())}
 
     for i in range(len(data)):
         data[i] = ["<START>"] + list(data[i]) + ["<EOP>"]
