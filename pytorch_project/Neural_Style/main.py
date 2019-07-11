@@ -26,22 +26,22 @@ class Config(object):
     data_root = '/home/zhangp/Documents/data/'
     use_gpu = True
     
-    style_path = 'style.jpg'
+    style_path = 'timg.jpg'
     lr = 1e-3
     env = 'neural-style'
     plot_every = 10
 
-    epoches = 2
+    epoches = 10
 
     content_weight = 1e5
     style_weight = 1e10
 
-    #model_path = './checkpoints/0_style.pth'
-    model_path = None
+    model_path = './checkpoints/1_1style.pth'
+    #model_path = None
     debug_file = ''
 
     content_path = 'style.jpg'
-    result_path = 'output.png'
+    result_path = 'output.jpg'
 
 opt = Config()
 
