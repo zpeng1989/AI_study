@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
 import os
 import urllib.request
-import re, threading, posixpath, urllib.parse, argparse, socket, time, hashlib, pickle, signal, imghdr
+import re
+import threading
+import posixpath
+import urllib.parse
+import argparse
+import socket
+import time
+import hashlib
+import pickle
+import signal
+import imghdr
 
 #config
 output_dir = './bing' #default output dir
