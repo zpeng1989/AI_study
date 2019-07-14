@@ -10,5 +10,14 @@ print(tf.reduce_sum([7,8,9]))
 print(tf.square(3) + tf.square(4))
 
 
-tf.Tensor(3, shape = (), stype = int32)
-tf.Tensor([5 13], shape = (2,),dtype = int32)
+#tf.Tensor(3, shape = (), stype = int32)
+#tf.Tensor([5 13], shape = (2,),dtype = int32)
+
+#tf.Tensor(36, shape = (), dtype = int32)
+
+
+
+x = tf.matmul([[3],[6]],[[2]])
+print(x)
+print(x.shape)
+print(x.dtype)
