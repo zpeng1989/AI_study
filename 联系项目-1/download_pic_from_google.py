@@ -1,8 +1,3 @@
-作者：绯色Ace
-链接：https://www.zhihu.com/question/322806629/answer/676922316
-来源：知乎
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
-
 import os
 import json
 import time
@@ -110,7 +105,7 @@ def download_images(link_file_path, download_dir, log_dir):
 
 if __name__ == "__main__":
 
-    list_keyword = 'rabbit'
+    list_keyword = ''
     main_keywords = [list_keyword]
     supplemented_keywords = ['']
 
