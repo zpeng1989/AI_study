@@ -124,3 +124,65 @@ if __name__ == '__main__':
 
 
 
+
+
+
+
+
+def main():
+    set1 = {1, 2, 3, 3, 3, 2}
+    print(set1)
+    print('Length = ', len(set1))
+    set2 = set(range(1, 10))
+    print(set2)
+    set1.add(4)
+    set1.add(5)
+    set2.update([11, 12])
+    print(set1)
+    print(set2)
+    if 4 in set2:
+        set2.remove(4)
+    print(set2)
+    for elem in set2:
+        print(elem ** 2)
+    print()
+    set3 = set((1,2,3,3,2,1))
+    print(set3.pop())
+    print(set3)
+    print(set1 & set2)
+    print(set1 | set2)
+    print(set1 - set2)
+    print(set1 ^ set2)
+    print(set2 <= set1)
+    print(set3 <= set1)
+    print(set1 >= set2)
+    print(set1 >= set3)
+
+
+if __name__ == '__main__':
+    main()
+
+
+
+def main():
+    scores = {'zp': 95, 'shu':97, 'drj': 82}
+    print(scores['zp'])
+    print(scores['shu'])
+    for elem in scores:
+        print('%s\t----\t%d'%(elem, scores[elem]))
+    scores['bai'] = 65
+    scores['zhuge'] = 71
+    scores.update(leng = 32, fang = 45)
+    print(scores)
+    print(scores.popitem())
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+
